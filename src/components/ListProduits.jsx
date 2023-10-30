@@ -1,22 +1,24 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import styles from './listproduits.module.css'
 
 export default class ListProduits extends Component {
 
     state = {
         categories: [],
-        categorie: 0
+        categorie: 0,
+        produits: []
     }
 
     render() {
         return (
-            <div>
-                <select name="categorie" id="categorie" value={this.state.categorie} onChange={(e) => this.setState({ categorie: e.target.value })}>
+            <div className={styles.list}>
+                <select className={styles.listcat} name="categorie" id="categorie" value={this.state.categorie} onChange={(e) => this.setState({ categorie: e.target.value })}>
                     <option value="0">Tous les produits</option>
                     {
                         this.state.categories.map(c =>
                             <option key={c.id} value={c.id}>{c.name}</option>
-                    )}
+                        )}
                 </select>
             </div>
         )
@@ -28,5 +30,20 @@ export default class ListProduits extends Component {
             return res.data;
         }
         getData().then(cats => this.setState({ categories: cats }));
+    }
+
+    componentDidUpdate(prevprops, prevstate) {
+        if (this.state.categorie != prevstate.categorie) {
+            const getData = async () => {
+                let res;
+                if (this.state.categorie == 0)
+                    res = await axios.get("https://api.escuelajs.co/api/v1/products")
+                else
+                    res = await axios.get(`https://api.escuelajs.co/api/v1/categories/${this.state.categorie}/products`)
+
+                return res.data;
+            }
+            getData().then(produits => this.setState({ produits: produits }));
+        }
     }
 }
