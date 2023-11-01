@@ -6,4 +6,6 @@
     top: 0;
     font-size: 30px;
     margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
 }

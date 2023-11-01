@@ -9,13 +9,18 @@ export default class ListProduits extends Component {
     state = {
         categories: [],
         categorie: -1,
-        produits: []
+        produits: [],
+        panier:[]
+    }
+
+    addPanier = (produit) => {
+        this.setState({panier: [...this.state.panier, produit]})
     }
 
     render() {
         return (
             <div className={styles.list}>
-                <Header />
+                <Header panier={this.state.panier}/>
                 <select className={styles.listcat} name="categorie" id="categorie" value={this.state.categorie} onChange={(e) => this.setState({ categorie: e.target.value })}>
                     <option value="0">Tous les produits</option>
                     {
@@ -25,11 +30,11 @@ export default class ListProduits extends Component {
                 </select>
 
                 <div className={styles.products}>
-                            {
-                                this.state.produits.map(p => 
-                                    <Product image={p.images[0]} titre={p.title} description={p.description} prix={p.price} />
-                                )
-                            }
+                    {
+                        this.state.produits.map(p =>
+                            <Product key={p.id} produit={p} handleClick={this.addPanier} />
+                        )
+                    }
                 </div>
 
             </div>
