@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import styles from './listproduits.module.css'
+import Product from './Product'
 
 export default class ListProduits extends Component {
 
     state = {
         categories: [],
-        categorie: 0,
+        categorie: -1,
         produits: []
     }
 
@@ -20,6 +21,15 @@ export default class ListProduits extends Component {
                             <option key={c.id} value={c.id}>{c.name}</option>
                         )}
                 </select>
+
+                <div className={styles.products}>
+                            {
+                                this.state.produits.map(p => 
+                                    <Product image={p.images[0]} titre={p.title} description={p.description} prix={p.price} />
+                                )
+                            }
+                </div>
+
             </div>
         )
     }
@@ -29,7 +39,7 @@ export default class ListProduits extends Component {
             const res = await axios.get("https://api.escuelajs.co/api/v1/categories")
             return res.data;
         }
-        getData().then(cats => this.setState({ categories: cats }));
+        getData().then(cats => this.setState({ categories: cats, categorie: 0 }));
     }
 
     componentDidUpdate(prevprops, prevstate) {
