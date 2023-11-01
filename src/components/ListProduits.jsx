@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import styles from './listproduits.module.css'
 import Product from './Product'
+import Header from './Header'
 
 export default class ListProduits extends Component {
 
@@ -14,6 +15,7 @@ export default class ListProduits extends Component {
     render() {
         return (
             <div className={styles.list}>
+                <Header />
                 <select className={styles.listcat} name="categorie" id="categorie" value={this.state.categorie} onChange={(e) => this.setState({ categorie: e.target.value })}>
                     <option value="0">Tous les produits</option>
                     {
